@@ -2,8 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
-
 
 // Scene, camera, renderer setup
 const scene = new THREE.Scene();
@@ -24,15 +22,8 @@ controls.enableZoom = true
 controls.update()
 
 
-scene.add(new THREE.AmbientLight(0xffffff, .5))
+scene.add(new THREE.AmbientLight(0xffffff, 3.5))
 
-const rgbeLoader = new RGBELoader()
-
-// Load HDRI 
-rgbeLoader.load('/hdr/pav_studio_03_4k.hdr', (texture) => {
-    texture.mapping = THREE.EquirectangularReflectionMapping
-    scene.environment = texture 
-})
 
 const models = [];
 
