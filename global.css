@@ -49,7 +49,7 @@ body::after {
 
 .model-nav {
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -60,20 +60,19 @@ body::after {
 .model-btn {
   background: transparent;
   color: rgba(255, 255, 255, 0.6);
-  border: 1px dashed rgba(255, 255, 255, 0.3);
   padding: 8px 20px;
   font-family: 'VT323', monospace;
   font-size: 20px;
   cursor: pointer;
   transition: all 0.2s ease;
+  border:none;
 }
 
 .model-btn:hover {
   color: white;
-  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .model-btn.active {
   color: white;
-  border-color: white;
+  text-decoration: underline;
 }

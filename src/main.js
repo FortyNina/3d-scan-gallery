@@ -3,6 +3,24 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 
+const modelData = [
+  {
+    name: 'Lily',
+    path: '/models/lily.glb',
+    position: [0, -.75, .2],
+  scale: [15, 15, 15],
+
+  },
+  {
+    name: 'Chapel',
+    path: '/models/chapel.glb',
+    position: [0, -.75, 0],
+scale: [8, 8, 8],
+
+  },
+]
+
+
 // Scene, camera, renderer setup
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0e0e0f) // light gray
@@ -30,26 +48,6 @@ const models = [];
 
 // Load GLB model
 const loader = new GLTFLoader()
-loader.load(
-    '/models/2_20_2026.glb',
-    (gltf) => {
-        const model = gltf.scene
-        scene.add(model)
-        model.position.set(0, -.75, .2);
-        model.scale.set(15,15,15);
-        model.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true
-                child.receiveShadow = true
-            }
-        })
-        models.push(model)
-    },
-    undefined,
-    (error) => {
-        console.error(error)
-    }
-)
 
 
 
@@ -66,18 +64,20 @@ window.addEventListener('resize', () => {
 });
 
 
-function loadModel(path) {
-  // Remove existing models
+
+const nav = document.querySelector('.model-nav');
+
+function loadModel(data) {
   models.forEach(m => scene.remove(m));
   models.length = 0;
 
   loader.load(
-    path,
+    data.path,
     (gltf) => {
       const model = gltf.scene;
       scene.add(model);
-      model.position.set(0, -.75, 0);
-      model.scale.set(15, 15, 15);
+      model.position.set(...data.position);
+model.scale.set(...data.scale);
       model.traverse((child) => {
         if (child.isMesh) {
           child.castShadow = true;
@@ -85,16 +85,31 @@ function loadModel(path) {
         }
       });
       models.push(model);
+
+      // do whatever you want with the rest of data here
+      console.log(data.description, data.date);
     },
     undefined,
     (error) => console.error(error)
   );
 }
 
-document.querySelectorAll('.model-btn').forEach(btn => {
+
+// Load first model by default
+loadModel(modelData[0]);
+
+modelData.forEach((data, i) => {
+  const btn = document.createElement('button');
+  btn.classList.add('model-btn');
+  if (i === 0) btn.classList.add('active');
+  btn.textContent = data.name;
   btn.addEventListener('click', () => {
     document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    loadModel(btn.dataset.model);
+    loadModel(data);
   });
+  nav.appendChild(btn);
 });
+
+loadModel(modelData[0]);
+
